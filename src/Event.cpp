@@ -24,7 +24,7 @@ Event::Event(Event&& other) noexcept :
     m_id(std::move(other.m_id)),
     callingObjectID(std::move(other.callingObjectID)) {}
 
-Event::Event& operator=(Event&& other) noexcept {
+Event& Event::operator=(Event&& other) noexcept {
     if (this != &other) {
         m_callback = std::move(other.m_callback);
         m_priority = std::move(other.m_priority);
@@ -45,15 +45,15 @@ bool Event::operator>(const Event& other) const {
     return std::tie(m_execTimeStep, m_priority) > std::tie(other.m_execTimeStep, other.m_priority);
 }
 
-void Event::invoke() {
+void Event::invoke() const {
     m_callback();
 }
 
-void Event::operator()() {
+void Event::operator()() const {
     invoke();
 }
 
-void Event::getPriority() const {
+Priority Event::getPriority() const {
     return m_priority;
 }
 
