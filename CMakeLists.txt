@@ -25,6 +25,10 @@ endif()
 add_library(EventProcessor SHARED
   src/Event.hpp
   src/Event.cpp
+  src/EventQueue.hpp
+  src/EventQueue.cpp
+  src/SimulationClock.hpp
+  src/SimulationClock.cpp
 )
 
 target_link_libraries(EventProcessor PRIVATE
