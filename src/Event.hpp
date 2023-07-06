@@ -82,5 +82,23 @@ class Event {
          * Invokes the callback function associated with this event.
          */
         void operator()() const;
+
+        /**
+         * Returns the priority level of this event.
+         * @return The priority level of this event.
+         */
+        Priority getPriority() const;
+
+        /**
+         * Returns the time step at which this event should be executed.
+         * @return The time step at which this event should be executed.
+         */
+        int getExecTimeStep() const;
+
+        /**
+         * Returns the unique ID of this event.
+         * @return The unique ID of this event.
+         */
+        boost::uuids::uuid getID() const;
 };
 
