@@ -21,7 +21,21 @@ class EventQueue {
     
     private:
 
-        std::priority_queue<Event> m_internalQueue; /**< The internal priority queue. */
+        /**
+        * @brief Wrapper around a unique_ptr that allows movement that doesn't break const of std::priority_queue.top()
+        */
+        struct MoveableEventPtr {
+            mutable std::unique_ptr<Event> ptr;
+            MoveableEventPtr(std::unique_ptr<Event> p);
+            MoveableEventPtr(MoveableEventPtr&& other);
+            MoveableEventPtr(const MoveableEventPtr& other);
+            MoveableEventPtr& operator=(MoveableEventPtr other);
+            bool operator<(const MoveableEventPtr& other) const;
+        };
+
+        std::priority_queue<MoveableEventPtr> m_internalQueue; /**< The internal priority queue. */
+        
+        //TODO - Look into redesign with mutable mutex and maintain function constness
         std::mutex m_mutex; /**< The mutex used to synchronize access to the queue. */
 
     public:
@@ -50,30 +64,30 @@ class EventQueue {
          * @brief Adds an event to the queue.
          * @param event The event to add.
          */
-        void enqueue(const Event& event);
+        void enqueue(std::unique_ptr<Event> event);
 
         /**
          * @brief Removes and returns the next event in the queue.
          * @return The next event in the queue.
          */
-        Event dequeue();
+        std::unique_ptr<Event> dequeue();
 
         /**
          * @brief Gets the next execution time step.
          * @return The next execution time step.
          */
-        unsigned int getNextExecTimeStep() const;
+        unsigned int getNextExecTimeStep();
 
         /**
          * @brief Gets the size of the queue.
          * @return The size of the queue.
          */
-        int size() const;
+        int size();
 
         /**
          * @brief Checks if the queue is empty.
          * @return True if the queue is empty, false otherwise.
          */
-        bool isEmpty() const;
+        bool isEmpty();
 
 };
