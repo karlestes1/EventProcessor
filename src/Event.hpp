@@ -102,3 +102,7 @@ class Event {
         boost::uuids::uuid getID() const;
 };
 
+// Overloaded comparison operator for unique_ptr<Event>
+bool operator<(const std::unique_ptr<Event>& lhs, const std::unique_ptr<Event>& rhs);
+bool operator>(const std::unique_ptr<Event>& lhs, const std::unique_ptr<Event>& rhs);
+

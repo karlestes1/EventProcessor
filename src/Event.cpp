@@ -65,3 +65,11 @@ boost::uuids::uuid Event::getID() const {
     return m_id;
 }
 
+bool operator<(const std::unique_ptr<Event>& lhs, const std::unique_ptr<Event>& rhs) {
+    return *lhs < *rhs;
+}
+
+bool operator>(const std::unique_ptr<Event>& lhs, const std::unique_ptr<Event>& rhs) {
+    return *lhs > *rhs;
+}
+
